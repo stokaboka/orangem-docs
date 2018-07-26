@@ -1,4 +1,6 @@
-# rbdocs
+Documentation Viewer
+
+VueJS
 
 ## Project setup
 ```
