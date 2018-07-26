@@ -14,8 +14,6 @@ export default {
   name: 'app',
   components: {
     DocToolbar,
-    DocViewer,
-    DocIndex,
     DocFooter
   }
 }
