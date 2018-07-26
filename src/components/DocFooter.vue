@@ -30,8 +30,8 @@ export default {
     }
 
 .footer {
-
-    position: relative;
+    flex: 0 0 auto;
+    position: absolute;
 
     width: 100%;
     min-height: 3rem;

@@ -1,10 +1,12 @@
 <template>
 <div class="toolbar toolbar-layout toolbar-deco">
-    <a href="/">
+    <div class="toolbar-layout">
+        <a href="/">
         <span>Orangem::DocViewer</span>
     </a>
-    <div class="toolbal-title">{{title}}</div>
-    <nav class="nav nav__position-right">
+        <div class="toolbal-title">{{title}}</div>
+    </div>
+    <nav class="nav">
         <router-link
                 v-for="link in links"
                 :key="link.id"
@@ -19,15 +21,14 @@
 <script>
 export default {
   name: 'DocToolbar',
-  data () {
-    return {
-      title: 'Help!!!',
-      links: [
-        {id: 0, title: 'About', href: '/', target: null},
-        {id: 1, title: 'Technology', href: '#technology', target: null},
-        {id: 2, title: 'Events', href: '#events', target: null},
-        {id: 3, title: 'Projects', href: '#projects', target: null}
-      ]
+  props: {
+    title: {
+      type: String,
+      reguired: true
+    },
+    links: {
+      type: Array,
+      reguired: true
     }
   }
 }
@@ -36,9 +37,10 @@ export default {
 <style scoped>
     .toolbar {
         position: fixed;
-        top: 0;
+        top: 0px;
+        left: 5px;
+        right: 5px;
         z-index: 100;
-        width: 100%;
         height: 40px;
     }
 
@@ -46,14 +48,13 @@ export default {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: left;
+        justify-content: space-between;
         align-items: center;
     }
 
     .toolbar-deco {
         background-color: #fff;
-        padding: 10px 60px;
-        box-shadow: 0 0 1px rgba(0,0,0,0.25);
+        border-bottom: 1px solid lightgray;
         transition: background-color 0.3s ease-in-out;
     }
 
@@ -62,15 +63,12 @@ export default {
         margin: auto 10px;
     }
 
-    nav {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        position: absolute;
-        right: 30px;
-        top: 10px;
-        height: 40px;
-        line-height: 40px;
+    .nav {
+    }
+
+    .nav__item{
+        margin: 5px;
+        text-align: center;
     }
 
 </style>
