@@ -10,7 +10,8 @@ export default {
   name: 'DocViewer',
   data: function () {
     return {
-      html: ''
+      html: '',
+      errors: []
     }
   },
   props: {
@@ -21,14 +22,20 @@ export default {
   },
 
   methods: {
+
+    prepareData (data) {
+      return data
+    },
+
     load (url) {
+      let self = this
       HTTP.get(url)
         .then(response => {
-          this.html = this.prepareData(response.data)
+          self.html = self.prepareData(response.data)
         })
         .catch(e => {
-          this.html = ''
-          this.errors.push(e)
+          self.html = ''
+          self.errors.push(e)
           console.error(e)
         })
     }
