@@ -3,6 +3,6 @@
     "id": "about",
     "order": 1,
     "title": "About",
-    "url": "index.html"
+    "file": "index.html"
   }
 ]

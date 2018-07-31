@@ -14,7 +14,7 @@ export default {
     }
   },
   props: {
-    docUrl: {
+    url: {
       type: String,
       reguired: false
     }
@@ -35,7 +35,7 @@ export default {
   },
 
   watch: {
-    docUrl: function (val, oldVal) {
+    url: function (val, oldVal) {
       this.load(val)
     }
   }

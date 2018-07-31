@@ -1,6 +1,9 @@
 <template>
     <div class="doc-container">
-        <doc-index :index="index"/>
+        <doc-index
+                :index="index"
+                @document-selected="onDocumentSelected"
+        />
         <doc-viewer :url="url"/>
     </div>
 </template>
@@ -28,36 +31,51 @@ export default {
     }
   },
 
+  created () {
+    if (this.$route.params.docid && this.$route.params.lang) {
+      this.loadIndex(this.$route.params.docid, this.$route.params.lang)
+    }
+  },
+
   methods: {
-    load (docid, lang) {
+    loadIndex (docid, lang) {
+      let self = this
       HTTP.get(`docs/${docid}/${lang}/index.json`)
         .then(response => {
-          this.index = this.prepareIndex(response.data)
-          this.docid = docid
-          this.lang = lang
+          self.docid = docid
+          self.lang = lang
+          self.index = this.prepareIndex(response.data, docid, lang)
         })
         .catch(e => {
-          this.docid = ''
-          this.lang = ''
-          this.index = []
-          this.url = ''
-          this.errors.push(e)
+          self.docid = ''
+          self.lang = ''
+          self.index = []
+          self.url = ''
+          self.errors.push(e)
           console.error(e.message)
         })
     },
-    prepareIndex (data) {
+
+    prepareIndex (data, docid, lang) {
+      return data.map(function (elem) {
+        return Object.assign(
+          {},
+          elem,
+          { url: `docs/${docid}/${lang}/${elem.file}` }
+        )
+      })
+    },
+
+    onDocumentSelected (item) {
+      this.url = item.url
     }
 
-  },
-
-  created () {
-    this.load(this.docid)
   },
 
   watch: {
     '$route': function (to, from) {
       console.log('container::docid', to.params.docid, to.params.lang)
-      this.load(to.params.docid, to.params.lang)
+      this.loadIndex(to.params.docid, to.params.lang)
     }
   }
 

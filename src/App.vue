@@ -73,11 +73,18 @@ export default {
 
   created () {
     let self = this
+    if (this.$route.params.lang) {
+      this.lang = this.$route.params.lang
+    }
+
+    if (this.$route.params.docid) {
+      this.docid = this.$route.params.docid
+    }
     HTTP.get('docs/index.json')
       .then(response => {
-        this.rawLinks = response.data.sort((a, b) => a.order - b.order)
-        this.links = this.getLinks(this.rawLinks, this.lang)
-        this.title = this.getTitle(this.links, this.lang, this.docid)
+        self.rawLinks = response.data.sort((a, b) => a.order - b.order)
+        self.links = self.getLinks(self.rawLinks, self.lang)
+        self.title = self.getTitle(self.links, self.lang, self.docid)
       })
       .catch(e => {
         self.errors.push(e)
