@@ -20,7 +20,8 @@ export default {
 
   data () {
     return {
-      docid: 'about',
+      docid: '',
+      lang: '',
       index: [],
       url: '',
       errors: []
@@ -28,17 +29,20 @@ export default {
   },
 
   methods: {
-    load (docid) {
-      HTTP.get(`${docid}.json`)
+    load (docid, lang) {
+      HTTP.get(`docs/${docid}/${lang}/index.json`)
         .then(response => {
           this.index = this.prepareIndex(response.data)
           this.docid = docid
+          this.lang = lang
         })
         .catch(e => {
+          this.docid = ''
+          this.lang = ''
           this.index = []
           this.url = ''
           this.errors.push(e)
-          console.error(e)
+          console.error(e.message)
         })
     },
     prepareIndex (data) {
@@ -46,10 +50,14 @@ export default {
 
   },
 
+  created () {
+    this.load(this.docid)
+  },
+
   watch: {
     '$route': function (to, from) {
-      console.log('docid', to.params.docid)
-      this.load(to.params.docid)
+      console.log('container::docid', to.params.docid, to.params.lang)
+      this.load(to.params.docid, to.params.lang)
     }
   }
 

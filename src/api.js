@@ -5,7 +5,7 @@ Copyright Igor Khorev igorhorev@gmail.com
 import axios from 'axios'
 
 const HTTP = axios.create({
-  baseURL: '/api/'
+  baseURL: '/'
 })
 
 const isMobileDevice = function () {

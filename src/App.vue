@@ -2,7 +2,10 @@
   <div id="app" class="wrapper">
     <doc-toolbar
             :title="title"
-            :links="links"/>
+            :links="links"
+            :languages="languages"
+            :lang="lang"
+            @language-change="onLanguageChange"/>
     <router-view/>
   </div>
 </template>
@@ -10,6 +13,7 @@
 <script>
 import DocFooter from './components/DocFooter'
 import DocToolbar from './components/DocToolbar'
+import {HTTP} from './api'
 
 export default {
   name: 'app',
@@ -20,11 +24,81 @@ export default {
 
   data () {
     return {
-      title: '45646546',
-      links: [
-        {id: 0, title: 'About', href: '/did/about', target: null},
-        {id: 1, title: 'RedButton', href: '/did/rb', target: null}
-      ]
+      lang: 'en',
+      docid: '',
+      languages: [{id: 'en', icon: ''}, {id: 'ru', icon: ''}],
+      rawLinks: [],
+      links: [],
+      title: '',
+      errors: []
+    }
+  },
+
+  methods: {
+
+    getTitle (links, lang, docid) {
+      if (docid) {
+        let doc = links.find(function (element) {
+          if (element.id === docid) {
+            return element
+          }
+        }, this)
+
+        if (doc) {
+          return doc.title
+        } else {
+          return ''
+        }
+      } else {
+        return ''
+      }
+    },
+
+    getLinks (links, lang) {
+      return links.map(function (link) {
+        return {
+          id: link.id,
+          title: link.title[lang],
+          href: `/docid/${link.id}/lang/${lang}`,
+          target: link.target ? link.target : null
+        }
+      })
+    },
+
+    onLanguageChange (value) {
+      this.lang = value
+      this.$router.push(`/docid/${this.docid}/lang/${this.lang}`)
+    }
+  },
+
+  created () {
+    let self = this
+    HTTP.get('docs/index.json')
+      .then(response => {
+        this.rawLinks = response.data.sort((a, b) => a.order - b.order)
+        this.links = this.getLinks(this.rawLinks, this.lang)
+        this.title = this.getTitle(this.links, this.lang, this.docid)
+      })
+      .catch(e => {
+        self.errors.push(e)
+        console.error(e.message)
+      })
+  },
+
+  watch: {
+    '$route': function (to, from) {
+      // console.log('app::$route', to.params.lang, to.params.docid)
+
+      if (to.params.lang) {
+        this.lang = to.params.lang
+      }
+
+      if (to.params.docid) {
+        this.docid = to.params.docid
+      }
+
+      this.links = this.getLinks(this.rawLinks, this.lang)
+      this.title = this.getTitle(this.links, this.lang, this.docid)
     }
   }
 }

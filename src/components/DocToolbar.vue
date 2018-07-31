@@ -14,6 +14,18 @@
                 class="nav__item" >
             {{ link.title }}
         </router-link>
+        <select
+                v-model="selectedLang"
+                title="Language"
+                v-on:change="onChangeLang($event.target.value)">
+            <option
+                    v-for="lng in languages"
+                    :key="lng.id"
+                    :value="lng.id"
+                    >
+                {{lng.id}}
+            </option>
+        </select>
     </nav>
 </div>
 </template>
@@ -29,8 +41,35 @@ export default {
     links: {
       type: Array,
       reguired: true
+    },
+    languages: {
+      type: Array,
+      reguired: true
+    },
+    lang: {
+      type: String,
+      reguired: true
+    }
+  },
+
+  methods: {
+    onChangeLang (value) {
+      this.$emit('language-change', value)
+    }
+  },
+
+  computed: {
+    selectedLang: {
+      get () {
+        // console.log('DocToolbar::selectedLang', this.lang)
+        return this.lang
+      },
+      set (val) {
+
+      }
     }
   }
+
 }
 </script>
 
