@@ -1,0 +1,22 @@
+[
+  {
+    "id": "about",
+    "order": 1,
+    "title": "О проекте",
+    "file": "about.html",
+    "content": [
+      {
+        "id": "history",
+        "order": 1,
+        "title": "История",
+        "file": "history.html"
+      },
+      {
+        "id": "history",
+        "order": 1,
+        "title": "История",
+        "file": "history.html"
+      },
+    ]
+  }
+]
