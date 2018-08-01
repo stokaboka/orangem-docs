@@ -2,21 +2,39 @@
   {
     "id": "about",
     "order": 1,
-    "title": "О проекте",
-    "file": "about.html",
+    "title": {
+      "en": "About",
+      "ru": "О проекте"
+    },
+    "file": {
+      "en": "en/about.html",
+      "ru": "ru/about.html"
+    },
     "content": [
       {
         "id": "history",
         "order": 1,
-        "title": "История",
-        "file": "history.html"
+        "title": {
+          "en": "History",
+          "ru": "История"
+        },
+        "file": {
+          "en": "en/history.html",
+          "ru": "ru/history.html"
+        }
       },
       {
-        "id": "history",
-        "order": 1,
-        "title": "История",
-        "file": "history.html"
-      },
+        "id": "stack",
+        "order": 2,
+        "title": {
+          "en": "Techology",
+          "ru": "Технологии"
+        },
+        "file": {
+          "en": "en/tech.html",
+          "ru": "ru/tech.html"
+        }
+      }
     ]
   }
 ]

@@ -1,10 +1,11 @@
 <template>
     <div class="doc-container">
-        <doc-index
+        <doc-index class="doc-index"
                 :index="index"
+                :lang="lang"
                 @document-selected="onDocumentSelected"
         />
-        <doc-viewer :url="url"/>
+        <doc-viewer class="doc-viewer" :url="url" :document="documnet" :lang="lang"/>
     </div>
 </template>
 
@@ -24,6 +25,7 @@ export default {
   data () {
     return {
       docid: '',
+      documnet: null,
       lang: '',
       index: [],
       url: '',
@@ -40,7 +42,8 @@ export default {
   methods: {
     loadIndex (docid, lang) {
       let self = this
-      HTTP.get(`docs/${docid}/${lang}/index.json`)
+      // HTTP.get(`docs/${docid}/${lang}/index.json`)
+      HTTP.get(`docs/${docid}/index.json`)
         .then(response => {
           self.docid = docid
           self.lang = lang
@@ -57,17 +60,29 @@ export default {
     },
 
     prepareIndex (data, docid, lang) {
-      return data.map(function (elem) {
-        return Object.assign(
-          {},
-          elem,
-          { url: `docs/${docid}/${lang}/${elem.file}` }
-        )
-      })
+      if (data) {
+        return data.map(function (elem) {
+          let _title = elem.title[lang] ? elem.title[lang] : ''
+          let _url = elem.file[lang] ? `docs/${this.docid}/${elem.file[lang]}` : ''
+
+          return Object.assign(
+            {},
+            elem,
+            {
+              title: _title,
+              url: _url,
+              content: this.prepareIndex(elem.content, docid, lang)
+            }
+          )
+        }, this)
+      } else {
+        return []
+      }
     },
 
     onDocumentSelected (item) {
-      this.url = item.url
+      this.documnet = item
+      this.url = this.documnet.url
     }
 
   },
@@ -86,4 +101,27 @@ export default {
     .doc-container{
         flex: 1 0 auto;
     }
+
+    .doc-index {
+        position: absolute;
+        z-index: 10;
+        top: 61px;
+        left: 0;
+        bottom: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: none;
+
+        padding: 10px 20px 10px 10px;
+
+        border-right: lightgray solid 1px;
+    }
+
+    .doc-viewer {
+        position: relative;
+        top: 61px;
+        padding: 10px 20px 10px 10px;
+    }
+
 </style>

@@ -15,9 +15,14 @@ export default {
     }
   },
   props: {
-    url: {
+    document: {
+      type: Object,
+      reguired: true
+    },
+
+    lang: {
       type: String,
-      reguired: false
+      reguired: true
     }
   },
 
@@ -37,13 +42,39 @@ export default {
           self.html = ''
           self.errors.push(e)
           console.error(e)
+          self.load(self.page_404)
         })
     }
   },
 
+  computed: {
+    page_404 () {
+      return `docs/404/${this.lang}/404.html`
+    },
+
+    page_empty () {
+      return `docs/404/${this.lang}/empty.html`
+    }
+  },
+
   watch: {
-    url: function (val, oldVal) {
-      this.load(val)
+    document: function (val, oldVal) {
+      if (val.url) {
+        this.load(val.url)
+      } else {
+        this.load(this.page_empty)
+      }
+    },
+
+    lang: function (val, oldVal) {
+      if (this.document) {
+        let _url = this.document.file[val] ? `docs/${this.document.id}/${this.document.file[val]}` : ''
+        if (_url) {
+          this.load(_url)
+        } else {
+          this.load(this.page_empty)
+        }
+      }
     }
   }
 }
