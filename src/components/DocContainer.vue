@@ -5,7 +5,12 @@
                 :lang="lang"
                 @document-selected="onDocumentSelected"
         />
-        <doc-viewer class="doc-viewer" :url="url" :document="documnet" :lang="lang"/>
+        <doc-viewer class="doc-viewer"
+                    :url="url"
+                    :docid="docid"
+                    :document="documnet"
+                    :lang="lang"
+        />
     </div>
 </template>
 
@@ -26,6 +31,7 @@ export default {
     return {
       docid: '',
       documnet: null,
+      section: '',
       lang: '',
       index: [],
       url: '',
@@ -34,24 +40,58 @@ export default {
   },
 
   created () {
+    // console.log('container::created::docid', this.$route.params)
     if (this.$route.params.docid && this.$route.params.lang) {
-      this.loadIndex(this.$route.params.docid, this.$route.params.lang)
+      this.loadIndex(this.$route.params.docid, this.$route.params.lang, this.$route.params.sectionid ? this.$route.params.sectionid : '')
     }
   },
 
   methods: {
-    loadIndex (docid, lang) {
+    getItemByID (section, index) {
+      if (index) {
+        let item = index.find(function (elem) { return elem.id === section })
+        if (item) {
+          return item
+        } else {
+          for (let i = 0; i < index.length; i++) {
+            let elem1 = index[i]
+            if (elem1['content']) {
+              let item = this.getItemByID(section, elem1['content'])
+              return item || null
+            }
+          }
+          return null
+        }
+      } else {
+        return null
+      }
+    },
+
+    loadIndex (docid, lang, section) {
       let self = this
-      // HTTP.get(`docs/${docid}/${lang}/index.json`)
+      console.log('loadIndex')
       HTTP.get(`docs/${docid}/index.json`)
         .then(response => {
           self.docid = docid
           self.lang = lang
+          self.section = section || ''
           self.index = this.prepareIndex(response.data, docid, lang)
+          let showItem = null
+          if (section) {
+            showItem = self.getItemByID(section, self.index)
+          } else {
+            if (self.index && self.index.length > 0) {
+              showItem = self.index[0]
+            }
+          }
+          if (showItem) {
+            self.setDocument(showItem)
+          }
         })
         .catch(e => {
           self.docid = ''
           self.lang = ''
+          self.section = ''
           self.index = []
           self.url = ''
           self.errors.push(e)
@@ -59,11 +99,15 @@ export default {
         })
     },
 
-    prepareIndex (data, docid, lang) {
+    prepareIndex (data, docid, lang, parent) {
       if (data) {
         return data.map(function (elem) {
           let _title = elem.title[lang] ? elem.title[lang] : ''
           let _url = elem.file[lang] ? `docs/${this.docid}/${elem.file[lang]}` : ''
+          let _section = parent ? elem.id : ''
+          let _href = _section
+            ? `/docid/${docid}/section/${_section}/lang/${lang}`
+            : `/docid/${docid}/lang/${lang}`
 
           return Object.assign(
             {},
@@ -71,7 +115,8 @@ export default {
             {
               title: _title,
               url: _url,
-              content: this.prepareIndex(elem.content, docid, lang)
+              href: _href,
+              content: this.prepareIndex(elem.content, docid, lang, elem)
             }
           )
         }, this)
@@ -81,7 +126,12 @@ export default {
     },
 
     onDocumentSelected (item) {
-      this.documnet = item
+      this.setDocument(item)
+      this.$router.push(item.href)
+    },
+
+    setDocument (document) {
+      this.documnet = document
       this.url = this.documnet.url
     }
 
@@ -89,8 +139,11 @@ export default {
 
   watch: {
     '$route': function (to, from) {
-      console.log('container::docid', to.params.docid, to.params.lang)
-      this.loadIndex(to.params.docid, to.params.lang)
+      // console.log('container::watch::docid', to.params)
+      // if (to.params.docid !== this.docid || to.params.lang !== this.lang || to.params.sectionid !== this.section) {
+      if (to.params.docid !== this.docid || to.params.lang !== this.lang) {
+        this.loadIndex(to.params.docid, to.params.lang, to.params.sectionid ? to.params.sectionid : null)
+      }
     }
   }
 
@@ -100,28 +153,42 @@ export default {
 <style scoped>
     .doc-container{
         flex: 1 0 auto;
+        height: 100%;
     }
 
     .doc-index {
-        position: absolute;
+        position: fixed;
         z-index: 10;
-        top: 61px;
+
+        top: 41px;
         left: 0;
         bottom: 0;
+
+        width: 20vw;
+        height: auto;
+        min-height: 100vh;
+
         overflow-x: hidden;
         overflow-y: auto;
+
         -webkit-overflow-scrolling: touch;
         -ms-overflow-style: none;
 
-        padding: 10px 20px 10px 10px;
+        margin: 10px 20px 10px 10px;
 
-        border-right: lightgray solid 1px;
     }
 
     .doc-viewer {
         position: relative;
-        top: 61px;
+        top: 41px;
+        left: 201px;
+        height: auto;
+        min-height: 100vh;
+        width: 80vw;
+        margin: 10px;
         padding: 10px 20px 10px 10px;
+
+        border-left: lightgray solid 1px;
     }
 
 </style>

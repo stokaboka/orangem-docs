@@ -10,11 +10,15 @@ export default {
   name: 'DocViewer',
   data: function () {
     return {
-      html: '',
-      errors: []
+      html: ''
+      // errors: []
     }
   },
   props: {
+    docid: {
+      type: String,
+      reguired: true
+    },
     document: {
       type: Object,
       reguired: true
@@ -40,8 +44,8 @@ export default {
         })
         .catch(e => {
           self.html = ''
-          self.errors.push(e)
-          console.error(e)
+          // self.errors.push(e)
+          // console.error(e)
           self.load(self.page_404)
         })
     }
@@ -57,6 +61,10 @@ export default {
     }
   },
 
+  created () {
+
+  },
+
   watch: {
     document: function (val, oldVal) {
       if (val.url) {
@@ -68,7 +76,7 @@ export default {
 
     lang: function (val, oldVal) {
       if (this.document) {
-        let _url = this.document.file[val] ? `docs/${this.document.id}/${this.document.file[val]}` : ''
+        let _url = this.document.file[val] ? `docs/${this.docid}/${this.document.file[val]}` : ''
         if (_url) {
           this.load(_url)
         } else {
@@ -82,7 +90,5 @@ export default {
 
 <style scoped>
 .doc-viewer{
-    width: 100%;
-    height: 100%;
 }
 </style>

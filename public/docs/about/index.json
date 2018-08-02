@@ -24,15 +24,15 @@
         }
       },
       {
-        "id": "stack",
+        "id": "technology",
         "order": 2,
         "title": {
           "en": "Techology",
           "ru": "Технологии"
         },
         "file": {
-          "en": "en/tech.html",
-          "ru": "ru/tech.html"
+          "en": "en/technology.html",
+          "ru": "ru/technology.html"
         }
       }
     ]

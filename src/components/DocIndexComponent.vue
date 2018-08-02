@@ -27,7 +27,7 @@ export default {
 
   methods: {
     onIndexClick ($event, item) {
-      console.log('***', item)
+      // console.log('***', item)
       this.$emit('document-selected', item)
     }
   }

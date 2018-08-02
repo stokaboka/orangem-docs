@@ -9,6 +9,10 @@ export default new Router({
     {
       path: '/docid/:docid/lang/:lang',
       component: DocContainer
+    },
+    {
+      path: '/docid/:docid/section/:sectionid/lang/:lang',
+      component: DocContainer
     }
   ]
 })

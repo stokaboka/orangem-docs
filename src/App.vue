@@ -26,6 +26,7 @@ export default {
     return {
       lang: 'en',
       docid: '',
+      sectionid: '',
       languages: [{id: 'en', icon: ''}, {id: 'ru', icon: ''}],
       rawLinks: [],
       links: [],
@@ -102,6 +103,12 @@ export default {
 
       if (to.params.docid) {
         this.docid = to.params.docid
+      }
+
+      if (to.params.sectionid) {
+        this.sectionid = to.params.sectionid
+      } else {
+        this.sectionid = ''
       }
 
       this.links = this.getLinks(this.rawLinks, this.lang)
