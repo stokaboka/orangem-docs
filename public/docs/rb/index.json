@@ -3,17 +3,29 @@
     "id": "about",
     "order": 1,
     "title": {
-      "en": "General Description",
-      "ru": "Общее описание"
+      "en": "Rb::Description",
+      "ru": "Rb::Описание"
     },
     "file": {
-      "en": "en/intro.html",
-      "ru": "ru/intro.html"
+      "en": "en/intro1.html",
+      "ru": "ru/intro1.html"
     },
     "content": [
       {
+        "id": "tutorial",
+        "order": 2,
+        "title": {
+          "en": "Video Tutorial",
+          "ru": "Видео с примерами"
+        },
+        "file": {
+          "en": "en/video.html",
+          "ru": "ru/video.html"
+        }
+      },
+      {
         "id": "history",
-        "order": 1,
+        "order": 2,
         "title": {
           "en": "History",
           "ru": "История"
@@ -25,7 +37,7 @@
       },
       {
         "id": "technology",
-        "order": 2,
+        "order": 3,
         "title": {
           "en": "Techology",
           "ru": "Технологии"

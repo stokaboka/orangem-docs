@@ -37,5 +37,6 @@ export default {
 <style scoped>
 h3, ul, li {
     text-align: start;
+    padding: 0;
 }
 </style>

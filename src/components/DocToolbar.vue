@@ -77,10 +77,11 @@ export default {
     .toolbar {
         position: fixed;
         top: 0px;
-        left: 5px;
-        right: 5px;
+        left: 0px;
+        right: 0px;
         z-index: 100;
         height: 40px;
+        padding: 0px 10px 0px 10px;
     }
 
     .toolbar-layout{

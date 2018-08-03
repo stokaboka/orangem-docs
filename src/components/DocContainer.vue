@@ -69,7 +69,7 @@ export default {
 
     loadIndex (docid, lang, section) {
       let self = this
-      console.log('loadIndex')
+      // console.log('loadIndex')
       HTTP.get(`docs/${docid}/index.json`)
         .then(response => {
           self.docid = docid
@@ -160,7 +160,7 @@ export default {
         position: fixed;
         z-index: 10;
 
-        top: 41px;
+        top: 40px;
         left: 0;
         bottom: 0;
 
@@ -174,14 +174,14 @@ export default {
         -webkit-overflow-scrolling: touch;
         -ms-overflow-style: none;
 
-        margin: 10px 20px 10px 10px;
+        margin: 40px 20px 10px 10px;
 
     }
 
     .doc-viewer {
         position: relative;
         top: 41px;
-        left: 201px;
+        left: 21vw;
         height: auto;
         min-height: 100vh;
         width: 80vw;

@@ -1,0 +1,153 @@
+<article>
+    <h2>Description</h2>
+
+    <p><strong>Rb</strong> for <i>information systems</i> with web interface and SQL or NoSQL <i>data sources</i>.
+    The basis of Rb is the <i>application server</i> Impress Application Server and <i>SPA web application</i> that implements the user interface.
+    In a nutshell, developing a web application for working with databases using <i>Rb</i> is reduced to the following steps:</p>
+
+    <ol type="1">
+        <li>Obtaining a database schema: tables and their structure, links (foreign keys);</li>
+        <li>Including in the empty model the selected tables (data sources);</li>
+        <li>Applying links to selected data sources from the database schema (optional);</li>
+        <li>add missing links and / or delete unnecessary links;</li>
+        <li>setting properties of data sources and field / column properties: headers, filters and sorts by default, the ability to edit and save data, etc;</li>
+        <li>Adjustment of fields / columns of data sources for visual components for displaying and / or editing data;</li>
+        <li>Creating forms and applications;</li>
+        <li>Assign a model name and save.</li>
+    </ol>
+
+    <p>As a result of these steps, a web application will be created allowing you to view and edit data in accordance with the settings. When the selected record is modified, the links are processed. This will download the records to the linked data sources.</p>
+    <p>At the moment, the main UI component of <i>RbTable</i> is used to display data source rows. RbTable allows you to view, sort and filter records. In the testing process, the <i>RbTreeTable</i> component</p>
+    <p>Editing of records is made in the form generated for each data source. You can use the components <i>RbList, RbComboBox, RbListOfValues, RbSequencer, RbDataMap, RbLinearProgress, RbColorIcon</i> to change field / column values (select values) and / or filter records.</p>
+
+<h2>Basic elements of Rb</h2>
+
+    <i>The application server performs the following functions:</i>
+
+    <ul>
+    <li>is a bridge between the web application and various data sources;</li>
+    <li>process requests for application to data sources;</li>
+    <li>performs service operations;</li>
+    <li>is a web server for distributing static files to the web application.</li>
+    </ul>
+
+    The <i>web application</i> implements the user interface for working with data sources. The structure of the web application consists of several parts:
+    <ul>
+        <li>model;</li>
+        <li>application;</li>
+        <li>the form;</li>
+        <li>data source;</li>
+        <li>links between data sources;</li>
+        <li>data bindings.</li>
+    </ul>
+
+    <i>The model</i> stores a description of the information domain of the information system and:
+    <ul>
+        <li>determines the sources of data, their structure and relationships;</li>
+        <li>defines logically completed applications;</li>
+        <li>defines forms (user interface);</li>
+        <li>determines the relationship between forms and applications;</li>
+        <li>determines the relationship of data sources.</li>
+    </ul>
+
+    <i>The application</i> combines forms into a logically completed part of the information system:
+    <ul>
+        <li>description of the application;</li>
+        <li>the order of the application;</li>
+        <li>collection of forms;</li>
+        <li>order of display and availability of forms.</li>
+    </ul>
+
+
+    <i>The form</i> is the main element of the user interface. Contains visual components associated with the data sources:
+    <ul>
+        <li>form description;</li>
+        <li>form layout;</li>
+        <li>collection of data sources;</li>
+        <li>distribution of visual components in the form grid.</li>
+    </ul>
+
+    <i>The data source</i> describes the structure of a single database object (usually a table):
+    <ul>
+        <li>general information about the database and the table;</li>
+        <li>possibility of reading / writing;</li>
+        <li>sorting and filters by default;</li>
+        <li>record validators;</li>
+        <li>hierarchical structure;</li>
+        <li>columns of the table (data source fields).</li>
+    </ul>
+
+    <i>The column</i> of the table (the data source field) determines the type stored in the source (table) of the data:
+    <ul>
+        <li>description;</li>
+        <li>possibility of reading / writing;</li>
+        <li>sorting and filters by default;</li>
+        <li>visual components for displaying and editing data.</li>
+    </ul>
+
+
+    <i>The links</i> between the data sources make it possible to update the data and visual representation in the linked data sources when the record in the parent data source is changed.
+
+    <i>Data binding</i> allows data sources to be used to populate fields in other data sources (lists of values) and / or filtering when displaying data.
+
+    <i>Transactions:</i> execution of all actions with data (upload, change, links) are performed using transactions.
+
+<h2>The scheme</h2>
+    <img src="/docs/rb/en/images/image1.png"/>
+
+<h2>RB Core</h2>
+    The core of Rb is the kernel: <strong>Rb::Core</strong>, which manages the data and their representations based on the models developed by the user.
+    Rb::Core performs the following functions:
+    <ul>
+        <li>loading the selected model;</li>
+        <li>the formation of the object model by controlling the loading and changing of data, the work of links and data binding;</li>
+        <li>formation of the object model of visual representation.</li>
+    </ul>
+
+    <h2>A Practical Guide</h2>
+    To demonstrate the capabilities, the <a href="https://dev.mysql.com/doc/employee/en/&sa=D&ust=1533133925229000">MySQL::Employees test database</a> is loaded onto the server. We will build an application to work with this database. To explain the work recorded demo video.
+
+
+    <h2>Rb interface</h2>
+        The Rb interface consists of two main parts (see screenshots below or demo videos):
+        <ul>
+            <li>Designer Models</li>
+            <li>Custom applications</li>
+        </ul>
+
+    <p>The main idea of ​​Rb is the simplicity and clarity for the end user. Therefore, we suggest that you familiarize yourself with the demonstration videos and then <a href="http://rb.orangem.me/">test Rb in the case</a>.</p>
+
+<h2>The Video Tutorial</h2>
+    <ul>
+        <li>Overview video on working with Rb: <a href="https://youtu.be/zI6LLIwmVW8" target="_blank">Project OranGem.me::RedButton - About</a>;</li>
+        <li>Linking data to filter records and lists of values: <a href="https://youtu.be/cQSPrUvU_Jk" target="_blank">Rb::ComboBox Filter & Select from the list</a>;</li>
+        <li>Working with hierarchical data: loading and displaying large-scale hierarchical data (experimental version): <a href="https://youtu.be/sYl0_jeXecw" target="_blank">Rb::Hierarchical data (experimental)</a>;</li>
+        <li>Using Rb :: DataMap and Rb :: Gadget for temporary transformation and using visual components to display data: <a href="https://youtu.be/MNmT-sJhSjU" target="_blank">Rb:DataMap && Rb::Gadget</a>;</li>
+        <li>Lists of values <a href="https://youtu.be/Kal57hQAdi4" target="_blank">Rb:ListOfValues</a>. Selecting and populating fields with data from linked data sources when creating and editing records;</li>
+        <li><a href="https://youtu.be/QhFkvVti214" target="_blank">Change and delete records in the database views.</a> In the data source properties, specify the base table and the fields available for the update.;</li>
+        <li><a href="https://youtu.be/Uvmvw3lkrbw" target="_blank">Create records in the linked data sources</a>, fill in the data fields in accordance with the binding rules. Using the list of values - Rb::ListOfValues and attributes of the fields of the records "Editable" and "Update".;</li>
+        <li>to be continued...</li>
+    </ul>
+
+
+<h2>Screenshots</h2>
+    <p>Here are some screenshots that show the main elements of the interface:</p>
+
+<p>Designer - Model Designer
+    <img src="/docs/rb/en/images/image2.png"/>
+</p>
+
+<p>Area of the applications and the forms
+<img src="/docs/rb/en/images/image5.png"/>
+</p>
+
+Simple form
+<img src="/docs/rb/en/images/image3.png"/>
+
+<p>Another form
+<img src="/docs/rb/en/images/image4.png"/>
+</p>
+
+<h2>Technologies used</h2>
+    <p>NodeJS, HTML, JS, CSS,  AngularJS,  IAS, MySQL, MongoDB, Oracle.</p>
+</article>

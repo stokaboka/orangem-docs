@@ -90,5 +90,7 @@ export default {
 
 <style scoped>
 .doc-viewer{
+    width: 80vw;
+    text-align: start;
 }
 </style>
