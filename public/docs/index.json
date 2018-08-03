@@ -1,15 +1,7 @@
 [
   {
-    "id": "about",
+    "id": "Rb",
     "order": 1,
-    "title": {
-      "en": "About",
-      "ru": "О проекте"
-    }
-  },
-  {
-    "id": "rb",
-    "order": 2,
     "title": {
       "en": "RedButton",
       "ru": "RedButton"
