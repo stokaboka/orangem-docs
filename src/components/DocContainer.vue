@@ -106,8 +106,8 @@ export default {
           let _url = elem.file[lang] ? `docs/${this.docid}/${elem.file[lang]}` : ''
           let _section = parent ? elem.id : ''
           let _href = _section
-            ? `/docid/${docid}/section/${_section}/lang/${lang}`
-            : `/docid/${docid}/lang/${lang}`
+            ? `/doc/${docid}/section/${_section}/lang/${lang}`
+            : `/doc/${docid}/lang/${lang}`
 
           return Object.assign(
             {},

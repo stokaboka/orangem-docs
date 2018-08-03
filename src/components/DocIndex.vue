@@ -27,7 +27,7 @@ export default {
 
   methods: {
     onDocumentSelected (item) {
-      console.log('***', item)
+      // console.log('***', item)
       this.$emit('document-selected', item)
     }
   }

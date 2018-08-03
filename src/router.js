@@ -7,11 +7,11 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/docid/:docid/lang/:lang',
+      path: '/doc/:docid/lang/:lang',
       component: DocContainer
     },
     {
-      path: '/docid/:docid/section/:sectionid/lang/:lang',
+      path: '/doc/:docid/section/:sectionid/lang/:lang',
       component: DocContainer
     }
   ],

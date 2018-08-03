@@ -13,7 +13,7 @@
 <script>
 import DocFooter from './components/DocFooter'
 import DocToolbar from './components/DocToolbar'
-import {HTTP} from './api'
+import { HTTP } from './api'
 
 export default {
   name: 'app',
@@ -27,7 +27,7 @@ export default {
       lang: 'en',
       docid: '',
       sectionid: '',
-      languages: [{id: 'en', icon: ''}, {id: 'ru', icon: ''}],
+      languages: [{ id: 'en', icon: '' }, { id: 'ru', icon: '' }],
       rawLinks: [],
       links: [],
       title: '',
@@ -36,7 +36,6 @@ export default {
   },
 
   methods: {
-
     getTitle (links, lang, docid) {
       if (docid) {
         let doc = links.find(function (element) {
@@ -60,7 +59,7 @@ export default {
         return {
           id: link.id,
           title: link.title[lang],
-          href: `/docid/${link.id}/lang/${lang}`,
+          href: `/doc/${link.id}/lang/${lang}`,
           target: link.target ? link.target : null
         }
       })
@@ -68,7 +67,13 @@ export default {
 
     onLanguageChange (value) {
       this.lang = value
-      this.$router.push(`/docid/${this.docid}/lang/${this.lang}`)
+      if (this.sectionid) {
+        this.$router.push(
+          `/doc/${this.docid}/section/${this.sectionid}/lang/${this.lang}`
+        )
+      } else {
+        this.$router.push(`/doc/${this.docid}/lang/${this.lang}`)
+      }
     }
   },
 
@@ -94,7 +99,7 @@ export default {
   },
 
   watch: {
-    '$route': function (to, from) {
+    $route: function (to, from) {
       // console.log('app::$route', to.params.lang, to.params.docid)
 
       if (to.params.lang) {
@@ -119,12 +124,11 @@ export default {
 </script>
 
 <style>
-
-  html,
-  body {
-    height: 100%;
-    margin: 0px;
-  }
+html,
+body {
+  height: 100%;
+  margin: 0px;
+}
 
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -134,11 +138,10 @@ export default {
   color: #2c3e50;
 }
 
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    height: 100%;
-  }
-
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
 </style>
