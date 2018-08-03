@@ -14,5 +14,19 @@ export default new Router({
       path: '/docid/:docid/section/:sectionid/lang/:lang',
       component: DocContainer
     }
-  ]
+  ],
+
+  scrollBehavior (to, from, savedPosition) {
+    // возвращаем требуемую позицию прокрутки
+    if (to.hash) {
+      return {
+        selector: `[id='${to.hash}']`,
+        offset: { y: 80 }
+      }
+    } else {
+      // return { y: 0 }
+      return null
+    }
+  }
+
 })
