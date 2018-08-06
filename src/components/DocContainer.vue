@@ -94,8 +94,8 @@ export default {
           self.section = ''
           self.index = []
           self.url = ''
-          self.errors.push(e)
-          console.error(e.message)
+          // self.errors.push(e)
+          // console.log(e.message)
         })
     },
 

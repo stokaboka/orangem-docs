@@ -94,7 +94,7 @@ export default {
       })
       .catch(e => {
         self.errors.push(e)
-        console.error(e.message)
+        // console.log(e.message)
       })
   },
 
