@@ -38,5 +38,6 @@ export default {
 h3, ul, li {
     text-align: start;
     padding: 0;
+    margin: 5px 0px 3px 0px;
 }
 </style>

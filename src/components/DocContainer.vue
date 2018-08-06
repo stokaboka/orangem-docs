@@ -152,23 +152,28 @@ export default {
 
 <style scoped>
     .doc-container{
-        flex: 1 0 auto;
+        position: absolute;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        align-content: flex-start;
+        /*flex: 1 0 auto;*/
         height: 100%;
+        min-height: 100vh;
+
+        top: 41px;
     }
 
     .doc-index {
-        position: fixed;
-        z-index: 10;
 
-        top: 40px;
-        left: 0;
-        bottom: 0;
+        position: fixed;
 
         width: 20vw;
-        height: auto;
+        height: 100vh;
         min-height: 100vh;
 
-        overflow-x: hidden;
+        overflow-x: auto;
         overflow-y: auto;
 
         -webkit-overflow-scrolling: touch;
@@ -180,13 +185,15 @@ export default {
 
     .doc-viewer {
         position: relative;
-        top: 41px;
-        left: 21vw;
-        height: auto;
+        /*width: 80vw;*/
+        /*height: 100vh;*/
         min-height: 100vh;
-        width: 80vw;
+        left: 20vw;
         margin: 10px;
         padding: 10px 20px 10px 10px;
+
+        /*overflow-x: auto;*/
+        /*overflow-y: auto;*/
 
         border-left: lightgray solid 1px;
     }

@@ -75,13 +75,12 @@ export default {
 
 <style scoped>
     .toolbar {
-        position: fixed;
+        position: absolute;
         top: 0px;
         left: 0px;
         right: 0px;
-        z-index: 100;
-        height: 40px;
-        padding: 0px 10px 0px 10px;
+        /*z-index: 100;*/
+        padding: 10px 10px 10px 10px;
     }
 
     .toolbar-layout{

@@ -89,6 +89,7 @@ export default {
 </script>
 
 <style scoped>
+
 .doc-viewer{
     width: 80vw;
     text-align: start;
