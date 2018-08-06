@@ -139,8 +139,6 @@ export default {
 
   watch: {
     '$route': function (to, from) {
-      // console.log('container::watch::docid', to.params)
-      // if (to.params.docid !== this.docid || to.params.lang !== this.lang || to.params.sectionid !== this.section) {
       if (to.params.docid !== this.docid || to.params.lang !== this.lang) {
         this.loadIndex(to.params.docid, to.params.lang, to.params.sectionid ? to.params.sectionid : null)
       }
@@ -152,27 +150,20 @@ export default {
 
 <style scoped>
     .doc-container{
-        position: absolute;
         display: flex;
-        flex-flow: row nowrap;
+        flex-flow: row wrap;
         justify-content: flex-start;
         align-items: flex-start;
         align-content: flex-start;
-        /*flex: 1 0 auto;*/
-        height: 100%;
-        min-height: 100vh;
-
         top: 41px;
     }
 
+    .doc-container > * {
+        padding: 10px;
+        flex: 1 100%;
+    }
+
     .doc-index {
-
-        position: fixed;
-
-        width: 20vw;
-        height: 100vh;
-        min-height: 100vh;
-
         overflow-x: auto;
         overflow-y: auto;
 
@@ -180,22 +171,36 @@ export default {
         -ms-overflow-style: none;
 
         margin: 40px 20px 10px 10px;
-
     }
 
     .doc-viewer {
-        position: relative;
-        /*width: 80vw;*/
-        /*height: 100vh;*/
-        min-height: 100vh;
-        left: 20vw;
-        margin: 10px;
+        min-height: 90vh;
+        margin: 40px 0 0 0;
         padding: 10px 20px 10px 10px;
-
-        /*overflow-x: auto;*/
-        /*overflow-y: auto;*/
-
         border-left: lightgray solid 1px;
+    }
+
+    @media all and (min-width: 600px) {
+        .doc-index {
+            flex: 1 auto;
+            min-height: 0;
+        }
+    }
+
+    @media all and (min-width: 800px) {
+        .doc-viewer {
+            flex: 3 0px;
+        }
+        .doc-index {
+            order: 1;
+            min-height: 0;
+        }
+        .doc-viewer {
+            order: 2;
+        }
+        /*.footer {*/
+            /*order: 3;*/
+        /*}*/
     }
 
 </style>
