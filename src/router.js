@@ -1,11 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import DocContainer from './components/DocContainer'
+import DocFullIndex from './components/DocFullIndex'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/',
+      component: DocFullIndex
+    },
     {
       path: '/doc/:docid/lang/:lang',
       component: DocContainer
@@ -13,7 +18,8 @@ export default new Router({
     {
       path: '/doc/:docid/section/:sectionid/lang/:lang',
       component: DocContainer
-    }
+    },
+    { path: '*', redirect: '/' }
   ],
 
   scrollBehavior (to, from, savedPosition) {
