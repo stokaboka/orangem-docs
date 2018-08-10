@@ -2,7 +2,7 @@
 <div class="toolbar toolbar-layout toolbar-deco">
     <div class="toolbar-layout">
         <a href="/">
-        <span>Orangem::DocViewer</span>
+        <span>{{logo}}</span>
     </a>
         <div class="toolbal-title">{{title}}</div>
     </div>
@@ -31,24 +31,30 @@
 </template>
 
 <script>
+
 export default {
   name: 'DocToolbar',
+
   props: {
+    logo: {
+      type: String,
+      required: true
+    },
     title: {
       type: String,
-      reguired: true
+      required: true
     },
     links: {
       type: Array,
-      reguired: true
+      required: true
     },
     languages: {
       type: Array,
-      reguired: true
+      required: true
     },
     lang: {
       type: String,
-      reguired: true
+      required: true
     }
   },
 
@@ -61,11 +67,9 @@ export default {
   computed: {
     selectedLang: {
       get () {
-        // console.log('DocToolbar::selectedLang', this.lang)
         return this.lang
       },
       set (val) {
-
       }
     }
   }

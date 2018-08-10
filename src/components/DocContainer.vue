@@ -6,8 +6,6 @@
                 @document-selected="onDocumentSelected"
         />
         <doc-viewer class="doc-viewer"
-                    :url="url"
-                    :docid="docid"
                     :document="documnet"
                     :lang="lang"
         />
@@ -16,7 +14,7 @@
 
 <script>
 
-import {HTTP} from '@/api'
+import api from '@/api'
 import DocIndex from './DocIndex'
 import DocViewer from './DocViewer'
 
@@ -29,7 +27,7 @@ export default {
 
   data () {
     return {
-      docid: '',
+      doc: '',
       documnet: null,
       section: '',
       lang: '',
@@ -40,9 +38,9 @@ export default {
   },
 
   created () {
-    // console.log('container::created::docid', this.$route.params)
-    if (this.$route.params.docid && this.$route.params.lang) {
-      this.loadIndex(this.$route.params.docid, this.$route.params.lang, this.$route.params.sectionid ? this.$route.params.sectionid : '')
+    // console.log('container::created::doc', this.$route.params)
+    if (this.$route.params.doc && this.$route.params.lang) {
+      this.loadIndex(this.$route.params.doc, this.$route.params.lang, this.$route.params.section ? this.$route.params.section : '')
     }
   },
 
@@ -67,15 +65,15 @@ export default {
       }
     },
 
-    loadIndex (docid, lang, section) {
+    loadIndex (doc, lang, section) {
       let self = this
       // console.log('loadIndex')
-      HTTP.get(`docs/${docid}/index.json`)
+      api.HTTP.get(`docs/${doc}/index.json`)
         .then(response => {
-          self.docid = docid
+          self.doc = doc
           self.lang = lang
           self.section = section || ''
-          self.index = this.prepareIndex(response.data, docid, lang)
+          self.index = this.prepareIndex(response.data, doc, lang)
           let showItem = null
           if (section) {
             showItem = self.getItemByID(section, self.index)
@@ -89,7 +87,7 @@ export default {
           }
         })
         .catch(e => {
-          self.docid = ''
+          self.doc = ''
           self.lang = ''
           self.section = ''
           self.index = []
@@ -99,15 +97,15 @@ export default {
         })
     },
 
-    prepareIndex (data, docid, lang, parent) {
+    prepareIndex (data, doc, lang, parent) {
       if (data) {
         return data.map(function (elem) {
           let _title = elem.title[lang] ? elem.title[lang] : ''
-          let _url = elem.file[lang] ? `docs/${this.docid}/${elem.file[lang]}` : ''
+          let _url = elem.file[lang] ? `docs/${this.doc}/${elem.file[lang]}` : ''
           let _section = parent ? elem.id : ''
           let _href = _section
-            ? `/doc/${docid}/section/${_section}/lang/${lang}`
-            : `/doc/${docid}/lang/${lang}`
+            ? `/doc/${doc}/section/${_section}/lang/${lang}`
+            : `/doc/${doc}/lang/${lang}`
 
           return Object.assign(
             {},
@@ -116,7 +114,7 @@ export default {
               title: _title,
               url: _url,
               href: _href,
-              content: this.prepareIndex(elem.content, docid, lang, elem)
+              content: this.prepareIndex(elem.content, doc, lang, elem)
             }
           )
         }, this)
@@ -139,8 +137,8 @@ export default {
 
   watch: {
     '$route': function (to, from) {
-      if (to.params.docid !== this.docid || to.params.lang !== this.lang) {
-        this.loadIndex(to.params.docid, to.params.lang, to.params.sectionid ? to.params.sectionid : null)
+      if (to.params.doc !== this.doc || to.params.lang !== this.lang) {
+        this.loadIndex(to.params.doc, to.params.lang, to.params.section ? to.params.section : null)
       }
     }
   }

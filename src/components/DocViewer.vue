@@ -4,29 +4,27 @@
 
 <script>
 
-import {HTTP} from '@/api'
+import api from '@/api'
 
 export default {
   name: 'DocViewer',
   data: function () {
     return {
-      html: ''
-      // errors: []
+      html: '',
+      state: api.state,
+      api: api
     }
   },
   props: {
-    docid: {
-      type: String,
-      reguired: true
-    },
+
     document: {
       type: Object,
-      reguired: true
+      required: true
     },
 
     lang: {
       type: String,
-      reguired: true
+      required: true
     }
   },
 
@@ -37,17 +35,16 @@ export default {
     },
 
     load (url) {
-      let self = this
-      HTTP.get(url)
-        .then(response => {
-          self.html = self.prepareData(response.data)
-        })
-        .catch(e => {
-          self.html = ''
-          // self.errors.push(e)
-          // console.error(e)
-          self.load(self.page_404)
-        })
+
+      // let self = this
+      // api.HTTP.get(url)
+      //   .then(response => {
+      //     self.html = self.prepareData(response.data)
+      //   })
+      //   .catch(e => {
+      //     self.html = ''
+      //     self.load(self.page_404)
+      //   })
     }
   },
 
@@ -72,18 +69,8 @@ export default {
       } else {
         this.load(this.page_empty)
       }
-    },
-
-    lang: function (val, oldVal) {
-      if (this.document) {
-        let _url = this.document.file[val] ? `docs/${this.docid}/${this.document.file[val]}` : ''
-        if (_url) {
-          this.load(_url)
-        } else {
-          this.load(this.page_empty)
-        }
-      }
     }
+
   }
 }
 </script>

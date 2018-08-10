@@ -12,11 +12,11 @@ export default new Router({
       component: DocFullIndex
     },
     {
-      path: '/doc/:docid/lang/:lang',
+      path: '/doc/:doc/lang/:lang',
       component: DocContainer
     },
     {
-      path: '/doc/:docid/section/:sectionid/lang/:lang',
+      path: '/doc/:doc/section/:section/lang/:lang',
       component: DocContainer
     },
     { path: '*', redirect: '/' }

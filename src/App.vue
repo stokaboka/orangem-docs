@@ -1,10 +1,11 @@
 <template>
   <div id="app" class="wrapper">
     <doc-toolbar
-            :title="title"
-            :links="links"
+            :logo="logo"
+            :title="state.title"
+            :links="state.links"
             :languages="languages"
-            :lang="lang"
+            :lang="state.lang"
             @language-change="onLanguageChange"/>
     <router-view/>
   </div>
@@ -13,7 +14,7 @@
 <script>
 import DocFooter from './components/DocFooter'
 import DocToolbar from './components/DocToolbar'
-import { HTTP } from './api'
+import api from './api'
 
 export default {
   name: 'app',
@@ -24,100 +25,56 @@ export default {
 
   data () {
     return {
-      lang: 'en',
-      docid: '',
-      sectionid: '',
-      languages: [{ id: 'en', icon: '' }, { id: 'ru', icon: '' }],
-      rawLinks: [],
-      links: [],
-      title: '',
-      errors: []
+      logo: 'Orangem::DocViewer',
+      languages: api.LANGUAGES,
+      state: api.state
     }
   },
 
   methods: {
-    getTitle (links, lang, docid) {
-      if (docid) {
-        let doc = links.find(function (element) {
-          if (element.id === docid) {
-            return element
-          }
-        }, this)
-
-        if (doc) {
-          return doc.title
-        } else {
-          return ''
-        }
-      } else {
-        return ''
-      }
-    },
-
-    getLinks (links, lang) {
-      return links.map(function (link) {
-        return {
-          id: link.id,
-          title: link.title[lang],
-          href: `/doc/${link.id}/lang/${lang}`,
-          target: link.target ? link.target : null
-        }
-      })
-    },
 
     onLanguageChange (value) {
-      this.lang = value
-      if (this.sectionid) {
-        this.$router.push(
-          `/doc/${this.docid}/section/${this.sectionid}/lang/${this.lang}`
-        )
-      } else {
-        this.$router.push(`/doc/${this.docid}/lang/${this.lang}`)
+      let route = ''
+
+      if (this.state.doc) {
+        route = route + `/doc/${this.state.doc}`
       }
+
+      if (this.state.section) {
+        route = route + `/section/${this.state.section}`
+      }
+
+      route = route + `/lang/${value}`
+
+      this.$router.push(route)
     }
   },
 
-  created () {
-    let self = this
-    if (this.$route.params.lang) {
-      this.lang = this.$route.params.lang
-    }
-
-    if (this.$route.params.docid) {
-      this.docid = this.$route.params.docid
-    }
-    HTTP.get('docs/index.json')
-      .then(response => {
-        self.rawLinks = response.data.sort((a, b) => a.order - b.order)
-        self.links = self.getLinks(self.rawLinks, self.lang)
-        self.title = self.getTitle(self.links, self.lang, self.docid)
-      })
-      .catch(e => {
-        self.errors.push(e)
-        // console.log(e.message)
-      })
+  async created () {
+    this.state = await api.initState(this.languages[0].id)
   },
 
   watch: {
+    state: function (n, o) {
+      console.log(n)
+    },
     $route: function (to, from) {
-      // console.log('app::$route', to.params.lang, to.params.docid)
+      // if (to.params.lang) {
+      //   this.lang = to.params.lang
+      // }
 
-      if (to.params.lang) {
-        this.lang = to.params.lang
-      }
+      // if (to.params.doc) {
+      //   this.doc = to.params.doc
+      // }
 
-      if (to.params.docid) {
-        this.docid = to.params.docid
-      }
+      // if (to.params.section) {
+      //   this.section = to.params.section
+      // } else {
+      //   this.section = ''
+      // }
 
-      if (to.params.sectionid) {
-        this.sectionid = to.params.sectionid
-      } else {
-        this.sectionid = ''
-      }
-
-      this.links = this.getLinks(this.rawLinks, this.lang)
-      this.title = this.getTitle(this.links, this.lang, this.docid)
+      this.state = api.dispatch(this.state, api.ACTIONS.SET_LANG, {lang: to.params.lang ? to.params.lang : 'en'})
+      this.state = api.dispatch(this.state, api.ACTIONS.SET_DOC, {doc: to.params.doc ? to.params.doc : ''})
     }
   }
 }
