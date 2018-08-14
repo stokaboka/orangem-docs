@@ -25,6 +25,10 @@ export default {
     DocViewer
   },
 
+  props: {
+
+  },
+
   data () {
     return {
       doc: '',
