@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import api from '@/api'
 import DocIndexComponent from './DocIndexComponent'
 export default {
   name: 'DocIndex',
@@ -19,17 +20,49 @@ export default {
       type: Array,
       value: []
     },
+    doc: {
+      type: String,
+      required: false
+    },
+    section: {
+      type: String,
+      required: false
+    },
+    article: {
+      type: String,
+      required: false
+    },
     lang: {
       type: String,
-      required: true
+      required: false
     }
   },
 
   methods: {
     onDocumentSelected (item) {
-      // console.log('***', item)
       this.$emit('document-selected', item)
     }
+  },
+
+  created () {
+    try {
+      let response = api.loadUrl(`docs/${this.doc}/index.json`)
+      this.index = api.prepareIndex(response, this.doc, this.lang)
+    } catch (e) {
+      console.log('*** DocIndex load index error ', e)
+    }
+  },
+
+  watch: {
+    'doc': function (val, oldVal) {
+      try {
+        let response = api.loadUrl(`docs/${val}/index.json`)
+        this.index = api.prepareIndex(response, val, this.lang)
+      } catch (e) {
+        console.log('*** DocIndex load index error ', e)
+      }
+    }
+
   }
 }
 </script>

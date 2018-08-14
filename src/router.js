@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import DocContainer from './components/DocContainer'
+// import DocContainer from './components/DocContainer'
+import DocIndex from './components/DocIndex'
+import DocViewer from './components/DocViewer'
 import DocFullIndex from './components/DocFullIndex'
 
 Vue.use(Router)
@@ -13,11 +15,18 @@ export default new Router({
     },
     {
       path: '/doc/:doc/lang/:lang',
-      component: DocContainer
+      components: { 'doc-index': DocIndex, 'doc-viewer': DocViewer },
+      props: { 'doc-index': true, 'doc-viewer': true }
     },
     {
-      path: '/doc/:doc/section/:section/lang/:lang',
-      component: DocContainer
+      path: '/doc/:doc/article/:article/lang/:lang',
+      components: { 'doc-index': DocIndex, 'doc-viewer': DocViewer },
+      props: { 'doc-index': true, 'doc-viewer': true }
+    },
+    {
+      path: '/doc/:doc/section/:section/article/:article/lang/:lang',
+      components: { 'doc-index': DocIndex, 'doc-viewer': DocViewer },
+      props: { 'doc-index': true, 'doc-viewer': true }
     },
     { path: '*', redirect: '/' }
   ],

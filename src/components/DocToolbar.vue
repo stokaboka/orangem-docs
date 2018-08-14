@@ -42,11 +42,15 @@ export default {
     },
     title: {
       type: String,
-      required: true
+      required: false,
+      default: ''
     },
     links: {
       type: Array,
-      required: true
+      required: false,
+      default: function () {
+        return []
+      }
     },
     languages: {
       type: Array,
@@ -54,7 +58,8 @@ export default {
     },
     lang: {
       type: String,
-      required: true
+      required: true,
+      default: 'en'
     }
   },
 

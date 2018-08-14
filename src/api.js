@@ -50,6 +50,16 @@ class DocsApi {
       }
     }
 
+    async loadUrl (url) {
+      try {
+        let response = await this.HTTP.get(url)
+        return response
+      } catch (e) {
+        console.log(e.message)
+        return ''
+      }
+    }
+
     dispatch (state, action, options) {
       let title, links
       switch (action) {
@@ -117,6 +127,63 @@ class DocsApi {
       } else {
         return links
       }
+    }
+
+    prepareIndex (data, doc, lang, parent) {
+      if (data) {
+        return data.map(function (elem) {
+          let _title = elem.title[lang] ? elem.title[lang] : ''
+          let _article = elem.id
+          let _url = elem.file[lang] ? `docs/${this.doc}/${elem.file[lang]}` : ''
+          let _section = parent ? elem.id : ''
+          let _href = _section
+            ? `/doc/${doc}/section/${_section}/article/${_article}/lang/${lang}`
+            : `/doc/${doc}/article/${_article}/lang/${lang}`
+
+          return Object.assign(
+            {},
+            elem,
+            {
+              title: _title,
+              url: _url,
+              href: _href,
+              content: this.prepareIndex(elem.content, doc, lang, elem)
+            }
+          )
+        }, this)
+      } else {
+        return []
+      }
+    }
+
+    getArticleUrl (doc, section, article, lang) {
+      let out = ''
+
+      if (doc) {
+        out = out + `docs/${doc}`
+      }
+
+      if (section) {
+        out = out + `/section/${section}`
+      }
+
+      if (lang) {
+        out = out + `/lang/${lang}`
+      }
+
+      if (article) {
+        out = out + `/${article}.html`
+      }
+
+      return out
+    }
+
+    getEmptyPageUrl (lang) {
+      return `docs/404/${lang}/empty.html`
+    }
+
+    get404PageUrl (lang) {
+      return `docs/404/${lang}/404.html`
     }
 }
 

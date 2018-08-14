@@ -17,11 +17,18 @@ export default {
   },
   props: {
 
-    document: {
-      type: Object,
+    doc: {
+      type: String,
       required: true
     },
-
+    section: {
+      type: String,
+      required: false
+    },
+    article: {
+      type: String,
+      required: false
+    },
     lang: {
       type: String,
       required: true
@@ -35,26 +42,29 @@ export default {
     },
 
     load (url) {
-
-      // let self = this
-      // api.HTTP.get(url)
-      //   .then(response => {
-      //     self.html = self.prepareData(response.data)
-      //   })
-      //   .catch(e => {
-      //     self.html = ''
-      //     self.load(self.page_404)
-      //   })
+      let self = this
+      api.HTTP.get(url)
+        .then(response => {
+          self.html = self.prepareData(response.data)
+        })
+        .catch(e => {
+          self.html = ''
+          self.load(self.page_404)
+        })
     }
   },
 
   computed: {
+
+    article_url () {
+      return api.getArticleUrl(this.doc, this.section, this.article, this.lang)
+    },
     page_404 () {
-      return `docs/404/${this.lang}/404.html`
+      return api.get404PageUrl(this.lang)
     },
 
     page_empty () {
-      return `docs/404/${this.lang}/empty.html`
+      return api.getEmptyPageUrl(this.lang)
     }
   },
 
@@ -63,14 +73,13 @@ export default {
   },
 
   watch: {
-    document: function (val, oldVal) {
-      if (val.url) {
-        this.load(val.url)
+    article_url: function (val, oldVal) {
+      if (val) {
+        this.html = api.loadUrl(val)
       } else {
-        this.load(this.page_empty)
+        this.html = api.loadUrl(this.page_empty)
       }
     }
-
   }
 }
 </script>

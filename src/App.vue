@@ -7,7 +7,10 @@
             :languages="languages"
             :lang="state.lang"
             @language-change="onLanguageChange"/>
-    <router-view/>
+    <div class="doc-container">
+      <router-view class="doc-index" name="doc-index"></router-view>
+      <router-view class="doc-viewer" name="doc-viewer"></router-view>
+    </div>
   </div>
 </template>
 
@@ -59,20 +62,6 @@ export default {
       console.log(n)
     },
     $route: function (to, from) {
-      // if (to.params.lang) {
-      //   this.lang = to.params.lang
-      // }
-
-      // if (to.params.doc) {
-      //   this.doc = to.params.doc
-      // }
-
-      // if (to.params.section) {
-      //   this.section = to.params.section
-      // } else {
-      //   this.section = ''
-      // }
-
       this.state = api.dispatch(this.state, api.ACTIONS.SET_LANG, {lang: to.params.lang ? to.params.lang : 'en'})
       this.state = api.dispatch(this.state, api.ACTIONS.SET_DOC, {doc: to.params.doc ? to.params.doc : ''})
     }
@@ -104,4 +93,57 @@ img {
   flex-direction: column;
   justify-content: flex-start;
 }
+
+.doc-container{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  top: 41px;
+}
+
+.doc-container > * {
+  padding: 10px;
+  flex: 1 100%;
+}
+
+.doc-index {
+  overflow-x: auto;
+  overflow-y: auto;
+
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+
+  margin: 40px 20px 10px 10px;
+}
+
+.doc-viewer {
+  min-height: 90vh;
+  margin: 40px 0 0 0;
+  padding: 10px 20px 10px 10px;
+  border-left: lightgray solid 1px;
+}
+
+@media all and (min-width: 600px) {
+  .doc-index {
+    flex: 1 auto;
+    min-height: 0;
+  }
+}
+
+@media all and (min-width: 800px) {
+  .doc-viewer {
+    flex: 3 0px;
+  }
+  .doc-index {
+    order: 1;
+    min-height: 0;
+  }
+  .doc-viewer {
+    order: 2;
+  }
+
+}
+
 </style>
