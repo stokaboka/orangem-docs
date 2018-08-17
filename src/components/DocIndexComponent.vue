@@ -1,21 +1,45 @@
 <template>
     <div>
         <h3>
-            <a  v-if="item.url" :href="item.url" @click.prevent="onIndexClick($event, item)">{{item.title}}</a>
-            <span v-else-if="item.url">{{item.title}}</span>
+            <router-link
+                    v-if="item.href"
+                    :key="item.id"
+                    :to="item.href">
+                {{ item.title }}
+            </router-link>
+            <span v-else-if="item.href">{{item.title}}</span>
+
         </h3>
     <ul>
         <li v-for="child in item.content" :key="child.id">
-            <a :href="child.url"
-               @click.prevent="onIndexClick($event, child)">
-                {{child.title}}
-            </a>
+            <router-link
+                    v-if="child.href"
+                    :key="child.id"
+                    :to="child.href">
+                {{ child.title }}
+            </router-link>
+            <span v-else-if="child.href">{{child.title}}</span>
         </li>
+
     </ul>
     </div>
 </template>
 
 <script>
+
+/*
+            <a  v-if="item.url" :href="item.href" @click.prevent="onIndexClick($event, item)">{{item.title}}</a>
+            <span v-else-if="item.url">{{item.title}}</span>
+
+        <li v-for="child in item.content" :key="child.id">
+            <a :href="child.href"
+               @click.prevent="onIndexClick($event, child)">
+                {{child.title}}
+            </a>
+        </li>
+
+ */
+
 export default {
   name: 'DocIndexComponent',
   props: {

@@ -24,7 +24,7 @@ export default new Router({
       props: { 'doc-index': true, 'doc-viewer': true }
     },
     {
-      path: '/doc/:doc/section/:section/article/:article/lang/:lang',
+      path: '/doc/:doc/article/:article/section/:section/lang/:lang',
       components: { 'doc-index': DocIndex, 'doc-viewer': DocViewer },
       props: { 'doc-index': true, 'doc-viewer': true }
     },

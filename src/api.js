@@ -60,6 +60,17 @@ class DocsApi {
       }
     }
 
+    async loadDocIndex (doc, lang) {
+      try {
+        let response = await this.loadUrl(this.getDocIndexUrl(doc, lang))
+        let index = this.prepareDocIndex(response.data, doc, lang)
+        return index
+      } catch (e) {
+        console.log('*** DocsApi::loadDocIndex', e)
+        return []
+      }
+    }
+
     dispatch (state, action, options) {
       let title, links
       switch (action) {
@@ -129,15 +140,22 @@ class DocsApi {
       }
     }
 
-    prepareIndex (data, doc, lang, parent) {
+    prepareDocIndex (data, doc, lang, parent) {
       if (data) {
         return data.map(function (elem) {
           let _title = elem.title[lang] ? elem.title[lang] : ''
-          let _article = elem.id
-          let _url = elem.file[lang] ? `docs/${this.doc}/${elem.file[lang]}` : ''
-          let _section = parent ? elem.id : ''
+          let _article = ''
+          let _section = ''
+
+          if (parent) {
+            _article = parent.id
+            _section = elem.id
+          } else {
+            _article = elem.id
+          }
+
           let _href = _section
-            ? `/doc/${doc}/section/${_section}/article/${_article}/lang/${lang}`
+            ? `/doc/${doc}/article/${_article}/section/${_section}/lang/${lang}`
             : `/doc/${doc}/article/${_article}/lang/${lang}`
 
           return Object.assign(
@@ -145,15 +163,19 @@ class DocsApi {
             elem,
             {
               title: _title,
-              url: _url,
+              // url: _url,
               href: _href,
-              content: this.prepareIndex(elem.content, doc, lang, elem)
+              content: this.prepareDocIndex(elem.content, doc, lang, elem)
             }
           )
         }, this)
       } else {
         return []
       }
+    }
+
+    getDocIndexUrl (doc, lang) {
+      return `docs/${doc}/index.json`
     }
 
     getArticleUrl (doc, section, article, lang) {
@@ -163,16 +185,20 @@ class DocsApi {
         out = out + `docs/${doc}`
       }
 
-      if (section) {
-        out = out + `/section/${section}`
-      }
-
       if (lang) {
-        out = out + `/lang/${lang}`
+        out = out + `/${lang}`
+      } else {
+        out = out + '/en'
       }
 
-      if (article) {
-        out = out + `/${article}.html`
+      if (section) {
+        if (article) {
+          out = out + `/${article}/${section}.html`
+        }
+      } else {
+        if (article) {
+          out = out + `/${article}.html`
+        }
       }
 
       return out
@@ -187,6 +213,6 @@ class DocsApi {
     }
 }
 
-const instance = new DocsApi()
+// const instance = new DocsApi()
 // export { HTTP, ACTIONS, isMobileDevice, dispatch, state, initState, LANGUAGES }
-export default instance
+export default new DocsApi()

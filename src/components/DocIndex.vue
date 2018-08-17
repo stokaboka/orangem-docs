@@ -15,11 +15,15 @@ import DocIndexComponent from './DocIndexComponent'
 export default {
   name: 'DocIndex',
   components: {DocIndexComponent},
+
+  data () {
+    return {
+      index: []
+    }
+  },
+
   props: {
-    index: {
-      type: Array,
-      value: []
-    },
+
     doc: {
       type: String,
       required: false
@@ -39,28 +43,31 @@ export default {
   },
 
   methods: {
+    async loadIndex (doc, lang) {
+      try {
+        this.index = await api.loadDocIndex(doc, lang)
+      } catch (e) {
+        // TODO show global index
+        console.log('DocIndex::loadIndex', e)
+        this.index = []
+      }
+    },
     onDocumentSelected (item) {
       this.$emit('document-selected', item)
     }
   },
 
-  created () {
-    try {
-      let response = api.loadUrl(`docs/${this.doc}/index.json`)
-      this.index = api.prepareIndex(response, this.doc, this.lang)
-    } catch (e) {
-      console.log('*** DocIndex load index error ', e)
-    }
+  async created () {
+    this.loadIndex(this.doc, this.lang)
   },
 
   watch: {
-    'doc': function (val, oldVal) {
-      try {
-        let response = api.loadUrl(`docs/${val}/index.json`)
-        this.index = api.prepareIndex(response, val, this.lang)
-      } catch (e) {
-        console.log('*** DocIndex load index error ', e)
-      }
+    doc: function (val, oldVal) {
+      this.loadIndex(val, this.lang)
+    },
+
+    lang: function (val, oldVal) {
+      this.loadIndex(this.doc, val)
     }
 
   }
