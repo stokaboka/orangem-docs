@@ -31,9 +31,16 @@
 </template>
 
 <script>
+import {api} from '../api'
 
 export default {
   name: 'DocToolbar',
+
+  data: function () {
+    return {
+      api
+    }
+  },
 
   props: {
     logo: {

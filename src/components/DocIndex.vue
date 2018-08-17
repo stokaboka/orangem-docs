@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import api from '@/api'
+import {api} from '@/api'
 import DocIndexComponent from './DocIndexComponent'
 export default {
   name: 'DocIndex',

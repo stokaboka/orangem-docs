@@ -19,34 +19,33 @@ class DocsApi {
       LOAD_DOC: 'LOAD_DOC'
     }
 
-    state = {}
     LANGUAGES = [
       {id: 'en', icon: ''},
       {id: 'ru', icon: ''}
     ]
 
-    async initState (lang) {
-      if (!lang) {
-        lang = 'en'
-      }
+    _docs = null
+
+    state = {
+      logo: 'Orangem::DocViewer',
+      title: '',
+      doc: '',
+      docs: [],
+      article: '',
+      section: '',
+      lang: this.LANGUAGES[0].id
+    }
+
+    app = null
+
+    async init (app) {
+      this.app = app
       try {
         let response = await this.HTTP.get('docs/index.json')
-
-        let docIndex = response.data.sort((a, b) => a.order - b.order)
-        this.state = Object.assign(
-          {},
-          this.state,
-          {
-            lang: lang,
-            docIndex: docIndex,
-            links: this.prepareLinks(docIndex, lang)
-          }
-        )
-        return this.state
+        this.setDocs(response.data)
+        this.prepareDocs()
       } catch (e) {
         console.log(e.message)
-        this.state = Object.assign({}, this.state)
-        return this.state
       }
     }
 
@@ -71,45 +70,10 @@ class DocsApi {
       }
     }
 
-    dispatch (state, action, options) {
-      let title, links
-      switch (action) {
-        case this.ACTIONS.SET_LANG :
-          if (state.docIndex) {
-            links = this.prepareLinks(state.docIndex, options.lang)
-            title = this.getTitle(links, options.lang, state.doc)
-            this.state = Object.assign(
-              {},
-              state,
-              {
-                links: links,
-                title: title,
-                lang: options.lang
-              }
-            )
-            return this.state
-          } else {
-            this.state = Object.assign({}, state)
-            return this.state
-          }
-
-        case this.ACTIONS.SET_DOC :
-          title = this.getTitle(state.links, state.lang, options.doc)
-          this.state = Object.assign({},
-            state,
-            {
-              doc: options.doc,
-              title: title
-            }
-          )
-          return this.state
-      }
-    }
-
-    getTitle (links, lang, doc) {
+    getTitle (doc) {
       if (doc) {
         let _doc = doc
-        let out = links.find(function (element) {
+        let out = this.state.docs.find(function (element) {
           if (element.id === _doc) {
             return element
           }
@@ -125,18 +89,33 @@ class DocsApi {
       }
     }
 
-    prepareLinks (links, lang) {
-      if (lang) {
-        return links.map(function (link) {
+    setDocs (docs) {
+      this._docs = docs.sort((a, b) => a.order - b.order)
+    }
+
+    setLang (lang) {
+      this.state = Object.assign({}, this.state, {lang})
+      let newRoute = Object.assign(
+        {},
+        this.app.$route.params,
+        {lang}
+      )
+      this.app.$router.push({params: newRoute})
+    }
+
+    prepareDocs () {
+      if (this._docs) {
+        let docs = this._docs.map(function (link) {
           return {
             id: link.id,
-            title: link.title[lang],
-            href: `/doc/${link.id}/lang/${lang}`,
+            title: link.title[this.lang],
+            href: `/doc/${link.id}/lang/${this.lang}`,
             target: link.target ? link.target : null
           }
         })
+        this.state = Object.assign({}, this.state, {docs})
       } else {
-        return links
+        this.state = Object.assign({}, this.state, {docs: []})
       }
     }
 
@@ -163,7 +142,6 @@ class DocsApi {
             elem,
             {
               title: _title,
-              // url: _url,
               href: _href,
               content: this.prepareDocIndex(elem.content, doc, lang, elem)
             }
@@ -213,7 +191,5 @@ class DocsApi {
       return `docs/404/${lang}/404.html`
     }
 }
-
-// const instance = new DocsApi()
-// export { HTTP, ACTIONS, isMobileDevice, dispatch, state, initState, LANGUAGES }
-export default new DocsApi()
+let api = new DocsApi()
+export {api}

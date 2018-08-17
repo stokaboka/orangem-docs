@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import DocContainer from './components/DocContainer'
+
 import DocIndex from './components/DocIndex'
 import DocViewer from './components/DocViewer'
 import DocFullIndex from './components/DocFullIndex'

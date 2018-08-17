@@ -1,12 +1,13 @@
 <template>
   <div id="app" class="wrapper">
     <doc-toolbar
-            :logo="logo"
+            :logo="state.logo"
             :title="state.title"
-            :links="state.links"
-            :languages="languages"
+            :links="state.docs"
+            :languages="api.LANGUAGES"
             :lang="state.lang"
-            @language-change="onLanguageChange"/>
+            @language-change="onLanguageChange"
+     />
     <div class="doc-container">
       <router-view class="doc-index" name="doc-index"></router-view>
       <router-view class="doc-viewer" name="doc-viewer"></router-view>
@@ -17,7 +18,7 @@
 <script>
 import DocFooter from './components/DocFooter'
 import DocToolbar from './components/DocToolbar'
-import api from './api'
+import {api} from './api'
 
 export default {
   name: 'app',
@@ -28,44 +29,25 @@ export default {
 
   data () {
     return {
-      logo: 'Orangem::DocViewer',
-      languages: api.LANGUAGES,
+      api: api,
       state: api.state
     }
   },
 
+  created () {
+    this.created()
+  },
+
   methods: {
-
-    onLanguageChange (value) {
-      let route = ''
-
-      if (this.state.doc) {
-        route = route + `/doc/${this.state.doc}`
-      }
-
-      if (this.state.section) {
-        route = route + `/section/${this.state.section}`
-      }
-
-      route = route + `/lang/${value}`
-
-      this.$router.push(route)
-    }
-  },
-
-  async created () {
-    this.state = await api.initState(this.languages[0].id)
-  },
-
-  watch: {
-    state: function (n, o) {
-      console.log(n)
+    async created () {
+      await api.init(this)
     },
-    $route: function (to, from) {
-      this.state = api.dispatch(this.state, api.ACTIONS.SET_LANG, {lang: to.params.lang ? to.params.lang : 'en'})
-      this.state = api.dispatch(this.state, api.ACTIONS.SET_DOC, {doc: to.params.doc ? to.params.doc : ''})
+
+    onLanguageChange (lang) {
+      this.api.setLang(lang)
     }
   }
+
 }
 </script>
 
