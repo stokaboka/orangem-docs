@@ -53,7 +53,7 @@ class DocsApi {
     async loadUrl (url) {
       try {
         let response = await this.HTTP.get(url)
-        return response
+        return response.data
       } catch (e) {
         console.log(e.message)
         return ''
@@ -63,7 +63,7 @@ class DocsApi {
     async loadDocIndex (doc, lang) {
       try {
         let response = await this.loadUrl(this.getDocIndexUrl(doc, lang))
-        let index = this.prepareDocIndex(response.data, doc, lang)
+        let index = this.prepareDocIndex(response, doc, lang)
         return index
       } catch (e) {
         console.log('*** DocsApi::loadDocIndex', e)
@@ -181,26 +181,27 @@ class DocsApi {
     getArticleUrl (doc, section, article, lang) {
       let out = ''
 
-      if (doc) {
-        out = out + `docs/${doc}`
-      }
-
-      if (lang) {
-        out = out + `/${lang}`
-      } else {
-        out = out + '/en'
-      }
-
-      if (section) {
-        if (article) {
-          out = out + `/${article}/${section}.html`
+      if (article || section) {
+        if (doc) {
+          out = out + `docs/${doc}`
         }
-      } else {
-        if (article) {
-          out = out + `/${article}.html`
+
+        if (lang) {
+          out = out + `/${lang}`
+        } else {
+          out = out + '/en'
+        }
+
+        if (section) {
+          if (article) {
+            out = out + `/${article}/${section}.html`
+          }
+        } else {
+          if (article) {
+            out = out + `/${article}.html`
+          }
         }
       }
-
       return out
     }
 

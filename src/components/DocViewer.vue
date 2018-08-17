@@ -41,16 +41,9 @@ export default {
       return data
     },
 
-    load (url) {
-      let self = this
-      api.HTTP.get(url)
-        .then(response => {
-          self.html = self.prepareData(response.data)
-        })
-        .catch(e => {
-          self.html = ''
-          self.load(self.page_404)
-        })
+    async loadHTML (url) {
+      this.html = await api.loadUrl(url)
+      console.log(this.html)
     }
   },
 
@@ -75,9 +68,9 @@ export default {
   watch: {
     article_url: function (val, oldVal) {
       if (val) {
-        this.html = api.loadUrl(val)
+        this.loadHTML(val)
       } else {
-        this.html = api.loadUrl(this.page_empty)
+        this.loadHTML(this.page_empty)
       }
     }
   }
