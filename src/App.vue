@@ -7,8 +7,8 @@
                  :languages="api.LANGUAGES"
     />
     <div class="doc-container">
-      <router-view class="doc-index" name="doc-index"></router-view>
-      <router-view class="doc-viewer" name="doc-viewer"></router-view>
+      <router-view class="doc-index" name="doc-index"/>
+      <router-view class="doc-viewer" name="doc-viewer"/>
     </div>
   </div>
 </template>
@@ -27,8 +27,7 @@ export default {
 
   data () {
     return {
-      api: api,
-      state: api.state
+      api: api
     }
   },
 
@@ -39,7 +38,6 @@ export default {
   methods: {
     async created () {
       await this.api.init(this)
-      // this.$router.push('/doc/rb/lang/en')
     }
   }
 

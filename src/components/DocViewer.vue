@@ -36,10 +36,6 @@ export default {
 
   methods: {
 
-    prepareData (data) {
-      return data
-    },
-
     async loadHTML (url) {
       this.html = await api.loadUrl(url)
     }
@@ -48,7 +44,7 @@ export default {
   computed: {
 
     article_url () {
-      return api.getArticleUrl(this.doc, this.section, this.article, this.lang)
+      return api.getArticleUrl(this.doc, this.article, this.section, this.lang)
     },
     page_404 () {
       return api.get404PageUrl(this.lang)

@@ -7,8 +7,6 @@ import DocIndex from './components/DocIndex'
 import DocViewer from './components/DocViewer'
 import DocFullIndex from './components/DocFullIndex'
 
-import {api} from './api'
-
 Vue.use(Router)
 
 export default new Router({
@@ -46,10 +44,6 @@ export default new Router({
       // return { y: 0 }
       return null
     }
-  },
-
-  beforeEach (to, from, next) {
-    console.log('*** beforeEach ***', api, to, from)
   }
 
 })

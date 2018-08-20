@@ -72,14 +72,7 @@ export default {
 
   methods: {
     onChangeLang (value) {
-      // this.$emit('language-change', value)
       this.api.setLang(value)
-    }
-  },
-
-  watch: {
-    lang: function (val, oldVal) {
-      console.log('toolbar lang', val)
     }
   },
 

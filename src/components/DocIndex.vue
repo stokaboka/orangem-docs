@@ -3,15 +3,16 @@
         <doc-index-component
                 v-for="item in index"
                 :key="item.id"
-                :item="item"
-                @document-selected="onDocumentSelected">
+                :item="item">
         </doc-index-component>
     </aside>
 </template>
 
 <script>
+
 import {api} from '@/api'
 import DocIndexComponent from './DocIndexComponent'
+
 export default {
   name: 'DocIndex',
   components: {DocIndexComponent},
@@ -51,9 +52,6 @@ export default {
         console.log('DocIndex::loadIndex', e)
         this.index = []
       }
-    },
-    onDocumentSelected (item) {
-      this.$emit('document-selected', item)
     }
   },
 

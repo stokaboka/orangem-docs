@@ -27,32 +27,12 @@
 
 <script>
 
-/*
-            <a  v-if="item.url" :href="item.href" @click.prevent="onIndexClick($event, item)">{{item.title}}</a>
-            <span v-else-if="item.url">{{item.title}}</span>
-
-        <li v-for="child in item.content" :key="child.id">
-            <a :href="child.href"
-               @click.prevent="onIndexClick($event, child)">
-                {{child.title}}
-            </a>
-        </li>
-
- */
-
 export default {
   name: 'DocIndexComponent',
   props: {
     item: {
       type: Object,
       require: true
-    }
-  },
-
-  methods: {
-    onIndexClick ($event, item) {
-      // console.log('***', item)
-      this.$emit('document-selected', item)
     }
   }
 }
@@ -61,7 +41,7 @@ export default {
 <style scoped>
 h3, ul, li {
     text-align: start;
-    padding: 0;
+    /*padding: 0;*/
     margin: 5px 0px 3px 0px;
 }
 </style>
