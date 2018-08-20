@@ -39,6 +39,7 @@ export default {
   methods: {
     async created () {
       await this.api.init(this)
+      // this.$router.push('/doc/rb/lang/en')
     }
   }
 

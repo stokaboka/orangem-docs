@@ -50,16 +50,38 @@ class DocsApi {
     }
 
     async loadUrl (url) {
+      let response = null
       if (url) {
         try {
-          let response = await this.HTTP.get(url)
+          response = await this.HTTP.get(url)
           return response.data
         } catch (e) {
-          console.log(e.message)
-          return ''
+          response = await this.load404Page()
+          return response.data ? response.data : response
         }
       } else {
-        return ''
+        response = await this.loadEmptyPage()
+        return response.data ? response.data : response
+      }
+    }
+
+    async load404Page () {
+      let response = await this.loadServicePage(this.get404PageUrl())
+      return response
+    }
+
+    async loadEmptyPage () {
+      let response = await this.loadServicePage(this.getEmptyPageUrl())
+      return response
+    }
+
+    async loadServicePage (url) {
+      try {
+        let response = await this.HTTP.get(url)
+        return response
+      } catch (e) {
+        console.log(e.message)
+        return e.message
       }
     }
 
@@ -187,12 +209,12 @@ class DocsApi {
       return out
     }
 
-    getEmptyPageUrl (lang) {
-      return `docs/404/${lang}/empty.html`
+    getEmptyPageUrl () {
+      return `docs/404/${this.state.lang}/empty.html`
     }
 
-    get404PageUrl (lang) {
-      return `docs/404/${lang}/404.html`
+    get404PageUrl () {
+      return `docs/404/${this.state.lang}/404.html`
     }
 }
 let api = new DocsApi()
