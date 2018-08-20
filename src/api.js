@@ -50,11 +50,15 @@ class DocsApi {
     }
 
     async loadUrl (url) {
-      try {
-        let response = await this.HTTP.get(url)
-        return response.data
-      } catch (e) {
-        console.log(e.message)
+      if (url) {
+        try {
+          let response = await this.HTTP.get(url)
+          return response.data
+        } catch (e) {
+          console.log(e.message)
+          return ''
+        }
+      } else {
         return ''
       }
     }
@@ -108,11 +112,11 @@ class DocsApi {
         let docs = this._docs.map(function (link) {
           return {
             id: link.id,
-            title: link.title[this.lang],
-            href: `/doc/${link.id}/lang/${this.lang}`,
+            title: link.title[this.state.lang],
+            href: `/doc/${link.id}/lang/${this.state.lang}`,
             target: link.target ? link.target : null
           }
-        })
+        }, this)
         this.state = Object.assign({}, this.state, {docs})
       } else {
         this.state = Object.assign({}, this.state, {docs: []})

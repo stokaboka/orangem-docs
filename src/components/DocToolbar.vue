@@ -1,5 +1,5 @@
 <template>
-<div class="toolbar toolbar-layout toolbar-deco">
+<div class="toolbar-layout toolbar-deco">
     <div class="toolbar-layout">
         <a href="/">
         <span>{{logo}}</span>
@@ -72,7 +72,14 @@ export default {
 
   methods: {
     onChangeLang (value) {
-      this.$emit('language-change', value)
+      // this.$emit('language-change', value)
+      this.api.setLang(value)
+    }
+  },
+
+  watch: {
+    lang: function (val, oldVal) {
+      console.log('toolbar lang', val)
     }
   },
 
@@ -90,14 +97,6 @@ export default {
 </script>
 
 <style scoped>
-    .toolbar {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        /*z-index: 100;*/
-        padding: 10px 10px 10px 10px;
-    }
 
     .toolbar-layout{
         display: flex;

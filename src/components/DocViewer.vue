@@ -11,7 +11,6 @@ export default {
   data: function () {
     return {
       html: '',
-      state: api.state,
       api: api
     }
   },
@@ -43,7 +42,6 @@ export default {
 
     async loadHTML (url) {
       this.html = await api.loadUrl(url)
-      console.log(this.html)
     }
   },
 
@@ -62,7 +60,7 @@ export default {
   },
 
   created () {
-
+    this.loadHTML(this.article_url)
   },
 
   watch: {

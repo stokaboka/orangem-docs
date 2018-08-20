@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import DocToolbar from './components/DocToolbar'
+
 import DocIndex from './components/DocIndex'
 import DocViewer from './components/DocViewer'
 import DocFullIndex from './components/DocFullIndex'
+
+import {api} from './api'
 
 Vue.use(Router)
 
@@ -15,18 +19,18 @@ export default new Router({
     },
     {
       path: '/doc/:doc/lang/:lang',
-      components: { 'doc-index': DocIndex, 'doc-viewer': DocViewer },
-      props: { 'doc-index': true, 'doc-viewer': true }
+      components: { 'doc-toolbar': DocToolbar, 'doc-index': DocIndex, 'doc-viewer': DocViewer },
+      props: { 'doc-toolbar': true, 'doc-index': true, 'doc-viewer': true }
     },
     {
       path: '/doc/:doc/article/:article/lang/:lang',
-      components: { 'doc-index': DocIndex, 'doc-viewer': DocViewer },
-      props: { 'doc-index': true, 'doc-viewer': true }
+      components: { 'doc-toolbar': DocToolbar, 'doc-index': DocIndex, 'doc-viewer': DocViewer },
+      props: { 'doc-toolbar': true, 'doc-index': true, 'doc-viewer': true }
     },
     {
       path: '/doc/:doc/article/:article/section/:section/lang/:lang',
-      components: { 'doc-index': DocIndex, 'doc-viewer': DocViewer },
-      props: { 'doc-index': true, 'doc-viewer': true }
+      components: { 'doc-toolbar': DocToolbar, 'doc-index': DocIndex, 'doc-viewer': DocViewer },
+      props: { 'doc-toolbar': true, 'doc-index': true, 'doc-viewer': true }
     },
     { path: '*', redirect: '/' }
   ],
@@ -42,6 +46,10 @@ export default new Router({
       // return { y: 0 }
       return null
     }
+  },
+
+  beforeEach (to, from, next) {
+    console.log('*** beforeEach ***', api, to, from)
   }
 
 })

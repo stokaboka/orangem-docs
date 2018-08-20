@@ -1,13 +1,11 @@
 <template>
   <div id="app" class="wrapper">
-    <doc-toolbar
-            :logo="state.logo"
-            :title="state.title"
-            :links="state.docs"
-            :languages="api.LANGUAGES"
-            :lang="state.lang"
-            @language-change="onLanguageChange"
-     />
+    <router-view class="doc-toolbar" name="doc-toolbar"
+                 :logo="api.state.logo"
+                 :title="api.state.title"
+                 :links="api.state.docs"
+                 :languages="api.LANGUAGES"
+    />
     <div class="doc-container">
       <router-view class="doc-index" name="doc-index"></router-view>
       <router-view class="doc-viewer" name="doc-viewer"></router-view>
@@ -40,11 +38,7 @@ export default {
 
   methods: {
     async created () {
-      await api.init(this)
-    },
-
-    onLanguageChange (lang) {
-      this.api.setLang(lang)
+      await this.api.init(this)
     }
   }
 
@@ -90,7 +84,19 @@ img {
   flex: 1 100%;
 }
 
+.doc-toolbar {
+  grid-area: toolbar;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  /*z-index: 100;*/
+  padding: 10px 10px 10px 10px;
+}
+
 .doc-index {
+  grid-area: index;
+
   overflow-x: auto;
   overflow-y: auto;
 
@@ -101,6 +107,8 @@ img {
 }
 
 .doc-viewer {
+  grid-area: viewer;
+
   min-height: 90vh;
   margin: 40px 0 0 0;
   padding: 10px 20px 10px 10px;
