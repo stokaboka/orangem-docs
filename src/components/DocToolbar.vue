@@ -2,8 +2,8 @@
 <div class="toolbar-layout toolbar-deco">
     <div class="toolbar-layout">
         <a href="/">
-        <span>{{logo}}</span>
-    </a>
+            <span>{{logo}}</span>
+        </a>
         <div class="toolbal-title">{{title}}</div>
     </div>
     <nav class="nav">
@@ -97,6 +97,8 @@ export default {
         flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
+
+        padding-right: 20px;
     }
 
     .toolbar-deco {

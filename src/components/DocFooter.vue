@@ -1,5 +1,5 @@
 <template>
-    <div class="footer">
+    <div class="footer-layout">
         <article>
             <header>
                 <span class="footer-section__header">Contacts:</span>
@@ -29,14 +29,7 @@ export default {
         line-height: 0.85;
     }
 
-.footer {
-    flex: 0 0 auto;
-    position: absolute;
-
-    width: 100%;
-    min-height: 3rem;
-
-    margin-top: 3rem;
+.footer-layout {
 
     display: flex;
     flex-direction: row;
