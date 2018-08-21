@@ -52,7 +52,7 @@ class DocsApi {
 
         this.checkRouteParametersAndShowDefaultDocument()
       } catch (e) {
-        console.log(e.message)
+        // console.log(e.message)
       }
     }
 
@@ -124,7 +124,7 @@ class DocsApi {
         let response = await this.HTTP.get(url)
         return response
       } catch (e) {
-        console.log(e.message)
+        // console.log(e.message)
         return e.message
       }
     }
@@ -136,7 +136,7 @@ class DocsApi {
         this.checkRouteParametersAndShowDefaultDocument()
         return index
       } catch (e) {
-        console.log('DocsApi::loadDocIndex', e)
+        // console.log('DocsApi::loadDocIndex', e)
         return []
       }
     }
